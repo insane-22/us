@@ -11,7 +11,7 @@ function Navbar() {
           <p className="hidden text-black dark:text-slate-50 font-medium md:block">Us</p>
         </Link>
 
-        <Link href="/sign-in" className={buttonVariants()}>
+        <Link href="/login" className={buttonVariants()}>
           Sign In
         </Link>
       </div>

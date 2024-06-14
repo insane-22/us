@@ -11,6 +11,7 @@ import { Activity, Bookmark, LogOut, Menu, Moon, Settings, Sun } from "lucide-re
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { signOut } from "next-auth/react";
 
 function MoreDropdown() {
   const [open, setOpen] = useState(false);
@@ -79,7 +80,7 @@ function MoreDropdown() {
 
         <DropdownMenuItem
           className="menuItem"
-          // onClick={() => signOut()}
+          onClick={() => signOut()}
         >
           <LogOut size={20} />
           <p>Log out</p>

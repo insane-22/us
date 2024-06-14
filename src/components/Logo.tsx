@@ -8,16 +8,16 @@ function Logo() {
       href={"/dashboard"}
       className={buttonVariants({
         className:
-          "hidden md:flex navLink !mb-10 lg:hover:bg-transparent lg:!p-0",
+          "hidden md:flex navLink lg:hover:bg-transparent",
         variant: "ghost",
         size: "lg",
       })}
     >
-      <Handshake className="h-6 w-6 shrink-0 lg:hidden" />
+      <Handshake className="h-6 w-6 shrink-0" />
       <p
         className={"font-semibold text-xl hidden lg:block"}
       >
-        Home
+        Us
       </p>
     </Link>
   );
