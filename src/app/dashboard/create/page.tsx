@@ -56,7 +56,7 @@ const CreateCommPage = () => {
       });
     },
     onSuccess: (data)=>{
-      router.push(`/${data}`)
+      router.push(`/dashboard/${data}`)
     }
   });
 
