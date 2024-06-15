@@ -77,14 +77,6 @@ function MoreDropdown() {
           {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           <p>{theme==="dark" ? "Light" : "Dark"} Mode</p>
         </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="menuItem"
-          onClick={() => signOut()}
-        >
-          <LogOut size={20} />
-          <p>Log out</p>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
