@@ -26,7 +26,7 @@ const CreateCommPage = () => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: "Subreddit already exists.",
+            title: "Community already exists.",
             description: "Please choose a different name.",
             variant: "destructive",
           });
@@ -34,7 +34,7 @@ const CreateCommPage = () => {
 
         if (err.response?.status === 422) {
           return toast({
-            title: "Invalid subreddit name.",
+            title: "Invalid community name.",
             description: "Please choose a name between 3 and 21 letters.",
             variant: "destructive",
           });
@@ -51,7 +51,7 @@ const CreateCommPage = () => {
 
       toast({
         title: "There was an error.",
-        description: "Could not create subreddit.",
+        description: "Could not create community.",
         variant: "destructive",
       });
     },
@@ -86,7 +86,7 @@ const CreateCommPage = () => {
 
         <div className="flex justify-end gap-4">
           <Button
-            // disabled={isLoading}
+            disabled={isPending}
             // variant="subtle"
             onClick={() => router.back()}
           >

@@ -39,7 +39,7 @@ const links = [
   },
   {
     name: "Create",
-    href: "/dashboard/create",
+    href: "/dashboard/createPost",
     icon: PlusSquare,
   },
 ];
