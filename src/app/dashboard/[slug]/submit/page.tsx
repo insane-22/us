@@ -22,9 +22,9 @@ import {
 import { Input } from "@/components/ui/input";
 import useMount from "@/hooks/useMount";
 import {
-  CreatePostValidator,
-  PostCreationRequest,
-} from "@/lib/validators/post";
+  CreateCommPostValidator,
+  CommPostCreationRequest,
+} from "@/lib/validators/community";
 import { UploadButton } from "@/lib/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -33,16 +33,25 @@ import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
 import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { db } from "@/lib/db";
 
-const CreatePostPage = () => {
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+const CreateCommPostPage = ({ params }: PageProps) => {
+  const { slug } = params;
   const pathname = usePathname();
-  const isCreatePage = pathname === "/dashboard/createPost";
+  const isCreateCommPage = pathname === `/dashboard/${slug}/submit`;
   const router = useRouter();
   const mount = useMount();
 
-  const form = useForm<PostCreationRequest>({
-    resolver: zodResolver(CreatePostValidator),
+  const form = useForm<CommPostCreationRequest>({
+    resolver: zodResolver(CreateCommPostValidator),
     defaultValues: {
+      communityId: slug,
       caption: undefined,
       fileUrl: undefined,
     },
@@ -50,8 +59,8 @@ const CreatePostPage = () => {
   const fileUrl = form.watch("fileUrl");
 
   const { mutate: createPost } = useMutation({
-    mutationFn: async (values: PostCreationRequest) => {
-      const { data } = await axios.post("/api/post", values);
+    mutationFn: async (values: CommPostCreationRequest) => {
+      const { data } = await axios.post("/api/community/post", values);
       return data as string;
     },
     onError: (err) => {
@@ -72,7 +81,6 @@ const CreatePostPage = () => {
           });
         }
       }
-      console.log(err);
 
       toast({
         title: "There was an error.",
@@ -81,7 +89,7 @@ const CreatePostPage = () => {
       });
     },
     onSuccess: (data) => {
-      router.push(`/dashboard`);
+      router.push(`/dashboard/${slug}`);
     },
   });
 
@@ -89,12 +97,12 @@ const CreatePostPage = () => {
   return (
     <div>
       <Dialog
-        open={isCreatePage}
+        open={isCreateCommPage}
         onOpenChange={(open) => !open && router.back()}
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create new post</DialogTitle>
+            <DialogTitle>Create new Community post</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form
@@ -183,4 +191,4 @@ const CreatePostPage = () => {
   );
 };
 
-export default CreatePostPage;
+export default CreateCommPostPage;

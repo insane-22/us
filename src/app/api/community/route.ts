@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response(community.name);
+    return new Response(community.id);
   } catch (error) {
     if(error instanceof z.ZodError){
         return new Response(error.message, { status: 422 });

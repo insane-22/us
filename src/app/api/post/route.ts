@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
 
-    const { fileUrl, caption, communityId } = CreatePostValidator.parse(body);
+    const { fileUrl, caption} = CreatePostValidator.parse(body);
 
     const post = await db.post.create({
       data: {

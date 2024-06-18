@@ -10,8 +10,8 @@ import { ReactNode } from "react";
 import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle";
 
 export const metadata: Metadata = {
-  title: "Breadit",
-  description: "A Reddit clone built with Next.js and TypeScript.",
+  title: "Us",
+  description: "A Full stack social media website built with Next.js and TypeScript.",
 };
 
 const Layout = async ({
@@ -24,9 +24,9 @@ const Layout = async ({
   const session = await auth();
 
   const community = await db.community.findFirst({
-    where: { name: slug },
+    where: { id: slug },
     include: {
-      posts: {
+      CommunityPost: {
         include: {
           author: true,
           Like: true,
@@ -40,7 +40,7 @@ const Layout = async ({
     : await db.subscription.findFirst({
         where: {
           community: {
-            name: slug,
+            id: slug,
           },
           user: {
             id: session.user.id,
@@ -55,7 +55,7 @@ const Layout = async ({
   const memberCount = await db.subscription.count({
     where: {
       community: {
-        name: slug,
+        id: slug,
       },
     },
   });
@@ -99,14 +99,13 @@ const Layout = async ({
                   communityId={community.id}
                   communityName={community.name}
                 />
-              ) : 
-              null}
+              ) : null}
               <Link
                 className={buttonVariants({
                   variant: "secondary",
                   className: "w-full mb-6",
                 })}
-                href={`dashboard/${slug}/submit`}
+                href={`/dashboard/${slug}/submit`}
               >
                 Create Post
               </Link>

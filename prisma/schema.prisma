@@ -58,15 +58,16 @@ model User {
   updatedAt     DateTime  @updatedAt @map("updated_at")
   image         String?
 
-  accounts   Account[]
-  sessions   Session[]
-  Post       Post[]
-  Comment    Comment[]
-  followedBy Follows[] @relation("following")
-  following  Follows[] @relation("follower")
-  Like       Like[]
-  createdCommunity Community[]    @relation("CreatedBy")
-  communities     Subscription[]
+  accounts         Account[]
+  sessions         Session[]
+  Post             Post[]
+  Comment          Comment[]
+  followedBy       Follows[]       @relation("following")
+  following        Follows[]       @relation("follower")
+  Like             Like[]
+  createdCommunity Community[]     @relation("CreatedBy")
+  communities      Subscription[]
+  CommunityPost    CommunityPost[]
 
   @@map("users")
 }
@@ -87,11 +88,11 @@ model Community {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  posts     Post[]
 
-  creatorId   String?
-  creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
-  subscribers Subscription[]
+  creatorId     String?
+  creator       User?           @relation("CreatedBy", fields: [creatorId], references: [id])
+  subscribers   Subscription[]
+  CommunityPost CommunityPost[]
 
   @@index([name])
 }
@@ -106,13 +107,28 @@ model Subscription {
 }
 
 model Post {
+  id        String   @id @default(cuid())
+  caption   String
+  fileUrl   String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @map("user_id")
+
+  comments Comment[]
+  Like     Like[]
+
+  @@index([authorId])
+}
+
+model CommunityPost {
   id          String    @id @default(cuid())
   caption     String
   fileUrl     String?   @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  community   Community? @relation(fields: [communityId], references: [id])
-  communityId String?
+  community   Community @relation(fields: [communityId], references: [id])
+  communityId String
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String    @map("user_id")
 
@@ -131,22 +147,27 @@ model Comment {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
 
-  replyToId String?
-  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replies   Comment[] @relation("ReplyTo")
+  replyToId       String?
+  replyTo         Comment?       @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies         Comment[]      @relation("ReplyTo")
   // commentId String?
+  CommunityPost   CommunityPost? @relation(fields: [communityPostId], references: [id])
+  communityPostId String?
 }
 
 model Like {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String?
   userId    String   @map("user_id")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  CommunityPost   CommunityPost? @relation(fields: [communityPostId], references: [id])
+  communityPostId String?
 
   @@unique([postId, userId])
+  @@unique([communityPostId, userId])
   @@index([userId])
 }

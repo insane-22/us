@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import CreateCommPost from "@/components/CreateCommPost";
+import Postfeed from "@/components/Postfeed";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
@@ -15,9 +16,9 @@ const CommunityPage = async ({ params }: PageProps) => {
   const { slug } = params;
   const session = await auth();
   const community = await db.community.findFirst({
-    where: { name: slug },
+    where: { id: slug },
     include: {
-      posts: {
+      CommunityPost: {
         include: {
           author: true,
           Like: true,
@@ -36,7 +37,7 @@ const CommunityPage = async ({ params }: PageProps) => {
         {community.name}
       </h1>
       <CreateCommPost session={session} />
-      {/* <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} /> */}
+      <Postfeed initialPosts={community.CommunityPost} communityName={community.name} />
     </>
   );
 };
