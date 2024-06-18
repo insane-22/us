@@ -96,7 +96,7 @@ const Post = ({ post }: { post: ExtendedCommunityPost }) => {
         className="px-3 sm:px-0"
       />
 
-      {post.id}
+      {/* {post.id} */}
       <Comments
         postId={post.id}
         comments={commentsWithExtras}
