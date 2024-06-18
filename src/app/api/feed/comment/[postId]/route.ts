@@ -4,16 +4,18 @@ import { CreateComment } from "@/lib/validators/post";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-const CommPostLikeValidator = z.object({
-  postId: z.string(),
-});
-
 export const getCommentsWithUser = async (postId: string) => {
   const comments = await db.comment.findMany({
     where: { postId: postId },
     include: { author: true },
   });
-  return comments;
+  return comments.map((comment) => ({
+    ...comment,
+    user: {
+      id: comment.author.id,
+      username: comment.author.username,
+    },
+  }));
 };
 
 export async function GET(req: Request) {
@@ -25,11 +27,11 @@ export async function GET(req: Request) {
   }
 
   try {
-    const posts = await getCommentsWithUser(postId);
-    return new Response(JSON.stringify(posts));
+    const comments = await getCommentsWithUser(postId);
+    return new Response(JSON.stringify(comments));
   } catch (error) {
     console.error(error);
-    return new Response("Could not fetch posts", { status: 500 });
+    return new Response("Could not fetch comments", { status: 500 });
   }
 }
 
@@ -41,7 +43,6 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
     const { content, postId } = CreateComment.parse(body);
-    // console.log(postId);
 
     const post = await db.post.findUnique({
       where: {

@@ -21,24 +21,7 @@ const Post = ({
   currLike: boolean;
 }) => {
   const { data: session } = useSession();
-  const [commentsWithExtras, setCommentsWithExtras] = useState<
-    CommentWithExtras[]
-  >([]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await axios.get(
-          `/api/community/post/comment/${post.id}`
-        );
-        setCommentsWithExtras(response.data);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-      }
-    };
-
-    fetchComments();
-  }, [post.id]);
+  
 
   return (
     <div className="flex flex-col space-y-2.5 dark:bg-neutral-950">
@@ -106,7 +89,7 @@ const Post = ({
       {/* {post.id} */}
       <Comments
         postId={post.id}
-        comments={commentsWithExtras}
+        // comments={commentsWithExtras}
         user={session?.user}
       />
     </div>

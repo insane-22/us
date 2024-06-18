@@ -13,7 +13,13 @@ export const getCommentsWithUser = async (postId: string) => {
     where: { communityPostId: postId },
     include: { author: true },
   });
-  return comments;
+  return comments.map((comment) => ({
+    ...comment,
+    user: {
+      id: comment.author.id,
+      username: comment.author.username,
+    },
+  }));
 };
 
 export async function GET(req: Request) {
@@ -25,11 +31,11 @@ export async function GET(req: Request) {
   }
 
   try {
-    const posts = await getCommentsWithUser(postId);
-    return new Response(JSON.stringify(posts));
+    const comments = await getCommentsWithUser(postId);
+    return new Response(JSON.stringify(comments));
   } catch (error) {
     console.error(error);
-    return new Response("Could not fetch posts", { status: 500 });
+    return new Response("Could not fetch comments", { status: 500 });
   }
 }
 
@@ -41,7 +47,6 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
     const { content, postId } = CreateComment.parse(body);
-    // console.log(postId);
 
     const post = await db.communityPost.findUnique({
       where: {
