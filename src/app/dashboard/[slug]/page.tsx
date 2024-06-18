@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import CreateCommPost from "@/components/CreateCommPost";
-import Postfeed from "@/components/Postfeed";
+import CreateCommPost from "@/components/Community/CreateCommPost";
+import Postfeed from "@/components/Community/Postfeed";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";

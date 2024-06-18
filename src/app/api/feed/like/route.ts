@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { CommPostLikeValidator } from "@/lib/validators/like";
+import { PostLikeValidator } from "@/lib/validators/like";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -12,16 +12,16 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { postId } = CommPostLikeValidator.parse(body);
+    const { postId } = PostLikeValidator.parse(body);
 
     const existingLike = await db.like.findFirst({
       where: {
         userId: session.user.id,
-        communityPostId: postId,
+        postId: postId,
       },
     });
 
-    const post = await db.communityPost.findUnique({
+    const post = await db.post.findUnique({
       where: {
         id: postId,
       },
@@ -39,12 +39,13 @@ export async function PATCH(req: Request) {
       try {
         await db.like.delete({
           where: {
-            communityPostId_userId: {
+            postId_userId: {
               userId: session.user.id,
-              communityPostId: postId,
+              postId: postId,
             },
           },
         });
+        revalidatePath(`/dashboard`);
         return new Response("Removed Like from Post.", { status: 200 });
       } catch (error) {
         return new Response("Failed to remove like from post", { status: 500 });
@@ -53,10 +54,11 @@ export async function PATCH(req: Request) {
       try {
         await db.like.create({
           data: {
-            communityPostId: postId,
+            postId: postId,
             userId: session.user.id,
           },
         });
+        revalidatePath(`/dashboard`);
         return new Response("Liked Post.", { status: 200 });
       } catch (error) {
         return new Response("Failed to like post", { status: 500 });

@@ -10,7 +10,7 @@ import Post from "./Post";
 import { useSession } from "next-auth/react";
 
 interface PostFeedProps {
-  initialPosts: ExtendedCommunityPost[];
+  initialPosts?: ExtendedCommunityPost[];
   communityName?: string;
 }
 
@@ -46,7 +46,7 @@ const Postfeed = ({ initialPosts, communityName }: PostFeedProps) => {
       try {
         const response = await axios.get(
           `/api/community/post?` +
-         (!!communityName ? `communityName=${communityName}` : "")
+            (!!communityName ? `communityName=${communityName}` : "")
         );
         setPosts(response.data);
       } catch (error) {
@@ -68,26 +68,28 @@ const Postfeed = ({ initialPosts, communityName }: PostFeedProps) => {
 
   return (
     <ul className="flex flex-col col-span-2 space-y-6">
-      {posts && posts.map((post, idx) => {
-        const currLike = post.Like.find(
-          (vote) => vote.userId === session?.user.id
-        );
+      {posts &&
+        posts.map((post, idx) => {
+          const Like = post.Like.find(
+            (vote) => vote.userId === session?.user.id
+          );
+          const currLike = Like ? true : false;
 
-        if (idx === posts.length - 1) {
-          return (
-            <li key={idx} ref={ref}>
-              <Post post={post} />
-              {/* <>hi</> */}
-            </li>
-          );
-        } else {
-          return (
-            <li key={idx}>
-              <Post post={post} />
-            </li>
-          );
-        }
-      })}
+          if (idx === posts.length - 1) {
+            return (
+              <li key={idx} ref={ref}>
+                <Post currLike={currLike} post={post} />
+                {/* <>hi</> */}
+              </li>
+            );
+          } else {
+            return (
+              <li key={idx}>
+                <Post currLike={currLike} post={post} />
+              </li>
+            );
+          }
+        })}
     </ul>
   );
 };

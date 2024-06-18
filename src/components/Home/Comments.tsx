@@ -58,7 +58,7 @@ function Comments({
     mutationFn: async (values: CommentCreationRequest) => {
       console.log(values);
       const { data } = await axios.post(
-        `/api/community/post/comment/${postId}`,
+        `/api/feed/comment/${postId}`,
         values
       );
       return data as string;

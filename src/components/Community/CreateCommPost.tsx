@@ -1,10 +1,10 @@
 "use client"
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "../UserAvatar";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Session } from "next-auth";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { ImageIcon, Link2 } from "lucide-react";
 
 interface CreateCommPostProps {

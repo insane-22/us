@@ -1,30 +1,28 @@
-"use-client";
-import { ExtendedCommunityPost } from "@/types/db";
-import UserAvatar from "./UserAvatar";
+import React, { useEffect, useState } from "react";
+import { Card } from "../ui/card";
+import { ExtendedPost } from "@/types/db";
+import UserAvatar from "../UserAvatar";
+import Timestamp from "../Timestamp";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import Timestamp from "./Timestamp";
-import PostOptions from "./PostOptions";
-import { Card } from "./ui/card";
 import Image from "next/image";
 import PostActions from "./PostActions";
-import Comments from "./Comments";
+import { useSession } from "next-auth/react";
 import { CommentWithExtras } from "@/types/post";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import Comments from "./Comments";
 
-const Post = ({ post }: { post: ExtendedCommunityPost }) => {
+const Post = ({ post }: { post: ExtendedPost }) => {
   const { data: session } = useSession();
   const [commentsWithExtras, setCommentsWithExtras] = useState<
     CommentWithExtras[]
   >([]);
+  const Like = post.Like.find((vote) => vote.userId === session?.user.id);
+  const currLike = Like ? true : false;
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(
-          `/api/community/post/comment/${post.id}`
-        );
+        const response = await axios.get(`/api/feed/comment/${post.id}`);
         setCommentsWithExtras(response.data);
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -56,8 +54,6 @@ const Post = ({ post }: { post: ExtendedCommunityPost }) => {
             </p>
           </div>
         </div>
-
-        <PostOptions post={post} userId={session?.user.id} />
       </div>
 
       {post.caption && (
@@ -90,13 +86,17 @@ const Post = ({ post }: { post: ExtendedCommunityPost }) => {
         </Card>
       )}
 
+      {/* {session?.user ? ( */}
       <PostActions
         post={post}
         userId={session?.user.id}
         className="px-3 sm:px-0"
+        currLike={currLike}
       />
+      {/* ) : (
+        <>Login to comment, like or share</>
+      )} */}
 
-      {/* {post.id} */}
       <Comments
         postId={post.id}
         comments={commentsWithExtras}

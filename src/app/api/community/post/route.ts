@@ -94,6 +94,8 @@ export async function GET(req: Request) {
           },
         },
       };
+    }else{
+      
     }
 
     const posts = await db.communityPost.findMany({
