@@ -12,3 +12,10 @@ export type ExtendedPost = Post & {
   author: User;
   comments: Comment[];
 };
+
+export type UserWithExtras = User & {
+  Post: Post[];
+  // communityPosts: CommunityPost
+  followedBy: FollowerWithExtras[];
+  following: FollowingWithExtras[];
+};

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Clapperboard,
   Compass,
   Heart,
   MessageCircle,
@@ -21,11 +20,6 @@ const links = [
     hideOnMobile: true,
   },
   { name: "Explore", href: "/dashboard/explore", icon: Compass },
-  {
-    name: "Reels",
-    href: "/dashboard/reels",
-    icon: Clapperboard,
-  },
   {
     name: "Messages",
     href: "/dashboard/messages",
