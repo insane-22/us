@@ -2,9 +2,10 @@ import { ExtendedPost } from "@/types/db";
 import React from "react";
 import LikeButton from "./Like";
 import { cn } from "@/lib/utils";
-import { Link, MessageCircle } from "lucide-react";
+import {MessageCircle } from "lucide-react";
 import ActionIcon from "../ActionIcon";
 import ShareButton from "../ShareButton";
+import Link from "next/link";
 
 type Props = {
   post: ExtendedPost;

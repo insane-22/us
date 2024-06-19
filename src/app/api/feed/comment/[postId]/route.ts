@@ -8,6 +8,9 @@ export const getCommentsWithUser = async (postId: string) => {
   const comments = await db.comment.findMany({
     where: { postId: postId },
     include: { author: true },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return comments.map((comment) => ({
     ...comment,
