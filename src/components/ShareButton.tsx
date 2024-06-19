@@ -15,7 +15,8 @@ function ShareButton({ postId }: { postId: string }) {
           title: "Copied successfully",
           description: "Link copied to clipboard",
           // variant: "destructive",
-        });}}
+        });
+      }}
     >
       <Send className={"h-6 w-6"} />
     </ActionIcon>

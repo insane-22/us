@@ -52,7 +52,7 @@ const Post = ({
       {post.caption && (
         <>
           <Link
-            href={`/dashboard/${post.author.username}`}
+            href={`/dashboard/user/${post.author.username}`}
             className="font-bold"
           >
             {post.author.username}

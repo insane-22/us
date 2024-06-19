@@ -1,4 +1,12 @@
-import type { Community, User, Comment, Like, CommunityPost, Post } from "@prisma/client";
+import type {
+  Community,
+  User,
+  Comment,
+  Like,
+  CommunityPost,
+  Post,
+  Subscription,
+} from "@prisma/client";
 
 export type ExtendedCommunityPost = CommunityPost & {
   community: Community;
@@ -15,7 +23,9 @@ export type ExtendedPost = Post & {
 
 export type UserWithExtras = User & {
   Post: Post[];
-  // communityPosts: CommunityPost
+  communityPosts?: CommunityPost[];
+  communities?: Subscription[];
+  createdCommunity?: Community[];
   followedBy: FollowerWithExtras[];
   following: FollowingWithExtras[];
 };

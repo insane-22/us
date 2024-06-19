@@ -59,7 +59,7 @@ const Post = ({ post }: { post: ExtendedPost }) => {
       {post.caption && (
         <>
           <Link
-            href={`/dashboard/${post.author.username}`}
+            href={`/dashboard/user/${post.author.username}`}
             className="font-bold"
           >
             {post.author.username}
@@ -99,7 +99,7 @@ const Post = ({ post }: { post: ExtendedPost }) => {
 
       <Comments
         postId={post.id}
-        comments={commentsWithExtras}
+        // comments={commentsWithExtras}
         user={session?.user}
       />
     </div>

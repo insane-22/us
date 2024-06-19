@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import useMount from "@/hooks/useMount";
-// import { updateProfile } from "@/lib/actions";
 
 import { UploadButton } from "@/lib/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +27,8 @@ import UserAvatar from "./UserAvatar";
 import { Form } from "./ui/form";
 import { UpdateUser } from "@/lib/validators/user";
 import { UserWithExtras } from "@/types/db";
+import { updateProfile } from "@/lib/actions";
+import { toast } from "@/hooks/use-toast";
 
 function ProfileAvatar({
   user,
@@ -71,8 +72,13 @@ function ProfileAvatar({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(async (values) => {
-                // const { message } = await updateProfile(values);
-                // toast(message);
+                const { message } = await updateProfile(values);
+                toast({
+                  title: "Updated successfully",
+                  description: "Picture updated",
+                  // variant: "destructive",
+                });
+      
 
                 setOpen(false);
               })}
