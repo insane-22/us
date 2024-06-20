@@ -4,7 +4,7 @@ import { CreateComment } from "@/lib/validators/post";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const getCommentsWithUser = async (postId: string) => {
+const getCommentsWithUser = async (postId: string) => {
   const comments = await db.comment.findMany({
     where: { postId: postId },
     include: { author: true },

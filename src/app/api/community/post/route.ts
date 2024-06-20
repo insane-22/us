@@ -68,14 +68,10 @@ export async function GET(req: Request) {
   try {
     const {  communityName } = z
       .object({
-        // limit: z.string(),
-        // page: z.string(),
         communityName: z.string().nullish().optional(),
       })
       .parse({
         communityName: url.searchParams.get("communityName"),
-        // limit: url.searchParams.get("limit") || 0,
-        // page: url.searchParams.get("page"),
       });
 
     let whereClause = {};
@@ -99,8 +95,6 @@ export async function GET(req: Request) {
     }
 
     const posts = await db.communityPost.findMany({
-      // take: parseInt(limit),
-      // skip: (parseInt(page) - 1) * parseInt(limit), // skip should start from 0 for page 1
       orderBy: {
         createdAt: "desc",
       },
@@ -118,41 +112,6 @@ export async function GET(req: Request) {
     return new Response("Could not fetch posts", { status: 500 });
   }
 }
-
-// export async function DELETE(req:Request) {
-//   const session = await auth();
-
-//  const body = await req.json();
-//  const { id } = DeleteCommPostValidator.parse(body);
- 
-//   const post = await db.communityPost.findUnique({
-//     where: {
-//       id,
-//       authorId: session?.user.id,
-//     },
-//   });
-
-//   if (!post) {
-//     throw new Error("Post not found");
-//   }
-
-//   try {
-//     await db.communityPost.delete({
-//       where: {
-//         id,
-//       },
-//     });
-//     revalidatePath("/dashboard");
-//     return new Response(JSON.stringify({ message: "Deleted Post" }), {
-//       status: 200,
-//     });
-//   } catch (error) {
-//     if (error instanceof z.ZodError) {
-//       return new Response(error.message, { status: 422 });
-//     }
-//     return new Response("Error in deleting post", { status: 500 });
-//   }
-// }
 
 export async function DELETE(req: NextRequest) {
   const session = await auth();

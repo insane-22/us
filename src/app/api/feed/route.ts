@@ -2,7 +2,6 @@ import { db } from "@/lib/db";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function GET(req: Request) {
-  // equivalent to doing fetch, cache: no-store
   noStore();
 
   try {
