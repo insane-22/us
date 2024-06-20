@@ -16,3 +16,14 @@ export const getUserId = async () => {
 
   return userId;
 };
+
+export const getUser=async()=>{
+  const session = await auth();
+  const user = session?.user
+
+  if (!user) {
+    throw new Error("You must be signed in to use this feature");
+  }
+
+  return user;
+}

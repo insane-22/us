@@ -69,6 +69,10 @@ model User {
   communities      Subscription[]
   CommunityPost    CommunityPost[]
 
+  conversation Conversation[]
+  messages          Message[]
+
+
   @@map("users")
 }
 
@@ -170,4 +174,28 @@ model Like {
   @@unique([postId, userId])
   @@unique([communityPostId, userId])
   @@index([userId])
+}
+
+model Conversation {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+
+  userIds     String[]
+  users       User[]
+  messagesIds String[]
+  messages    Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId           String
+  sender             User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
