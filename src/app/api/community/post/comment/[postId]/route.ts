@@ -8,7 +8,7 @@ const CommPostLikeValidator = z.object({
   postId: z.string(),
 });
 
-export const getCommentsWithUser = async (postId: string) => {
+const getCommentsWithUser = async (postId: string) => {
   const comments = await db.comment.findMany({
     where: { communityPostId: postId },
     include: { author: true },

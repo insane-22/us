@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import { Fragment } from "react";
 import { X } from "lucide-react";
 
 interface ModalProps {
@@ -20,7 +19,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="relative z-50">
+      <DialogContent className="z-50">
         <DialogHeader>
           <div className="absolute right-0 top-0 pr-4 pt-4 z-10">
             <button
